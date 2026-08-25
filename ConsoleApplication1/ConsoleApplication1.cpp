@@ -1,23 +1,33 @@
 ﻿
 #include <iostream>
 
-int max_int(int a, int b) {
-	return a > b ? a : b;
-}
+template<typename T,std::size_t N>
+class StaticArray
+{
+	T data[N];
+public:
+	constexpr T& operator[](std::size_t i) { return data[i]; }
+	constexpr const T& operator[](std::size_t i) const { return data[i]; }
+    constexpr std::size_t size() const { return N; }
+};
 
-long max_long(long a, long b) {
-	return a > b ? a : b;
-}
+int main()
+{
+	StaticArray<int, 10> data;
 
-float max_float(float a, float b) {
-	return a > b ? a : b;
-}
+	for (auto i = 0; i < data.size(); ++i)
+	{
+		data[i] = i;
+	}
 
-int main() {
-	float a = 10.9;
-		float b = 10.;
+	std::cout << data[5] << std::endl; 
 
-		std::cout << "Max: " << max_int(a, b) << std::endl;
-		std::cout << "Max: " << max_long(a, b) << std::endl;
-		std::cout << "Max: " << max_float(a, b) << std::endl;
+
+
+
+
+
+
+
+
 }

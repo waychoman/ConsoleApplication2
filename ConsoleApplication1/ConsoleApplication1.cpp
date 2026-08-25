@@ -1,33 +1,34 @@
 ﻿
 #include <iostream>
 
-template<typename T,std::size_t N>
-class StaticArray
+template<typename T>struct IsPointer
 {
-	T data[N];
-public:
-	constexpr T& operator[](std::size_t i) { return data[i]; }
-	constexpr const T& operator[](std::size_t i) const { return data[i]; }
-    constexpr std::size_t size() const { return N; }
+	static constexpr bool value = false;
+};
+
+template<typename U>struct IsPointer<U*>
+{
+	static constexpr bool value = true;
+};
+
+struct NotPointer :IsPointer<int>
+{
+};
+
+template<typename H>struct IsArray
+{
+	static constexpr bool value = false;
+};
+
+template<typename H, std::size_t a>struct IsArray<H[a]>
+{
+	static constexpr bool value = true;
 };
 
 int main()
 {
-	StaticArray<int, 10> data;
-
-	for (auto i = 0; i < data.size(); ++i)
-	{
-		data[i] = i;
-	}
-
-	std::cout << data[5] << std::endl; 
-
-
-
-
-
-
-
-
+	std::cout << IsArray<int>::value << std::endl;
+	std::cout << IsArray<int[10]>::value << std::endl;
+	std::cout << IsArray<float[5]>::value << std::endl;
 
 }
